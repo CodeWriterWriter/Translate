@@ -8,15 +8,21 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
-    
+    @IBOutlet weak var languageToTranslateTo: UIPickerView!
+    var languages: [String:String] = [String:String]()
     //var data = NSMutableData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.languageToTranslateTo.dataSource = self
+        self.languageToTranslateTo.delegate = self
+        languages["Irish"] = "ga"
+        languages["Turkish"] = "tr"
         
     }
     
