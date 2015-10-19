@@ -25,6 +25,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         self.languageToTranslateTo.delegate = self
         languages.append("Irish"); languageKeys.append("ga")
         languages.append("Turkish"); languageKeys.append("tr")
+        languages.append("French"); languageKeys.append("fr")
         
     }
 
