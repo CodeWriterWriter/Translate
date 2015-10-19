@@ -56,6 +56,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         return true
     }
     
+    @IBAction func viewTapped(sender : AnyObject) {
+        textToTranslate.resignFirstResponder()
+    }
+    
     
     @IBAction func translate(sender: AnyObject) {
         
