@@ -8,12 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate {
     
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
     @IBOutlet weak var languageToTranslateTo: UIPickerView!
-    @IBOutlet weak var myLabel:UILabel!
     var languages: [String] = [String]()
     var languageKeys: [String] = [String]()
     //var data = NSMutableData()
@@ -23,6 +22,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         self.languageToTranslateTo.dataSource = self
         self.languageToTranslateTo.delegate = self
+        self.textToTranslate.delegate = self;
         languages.append("Irish"); languageKeys.append("ga")
         languages.append("Turkish"); languageKeys.append("tr")
         languages.append("French"); languageKeys.append("fr")
@@ -48,6 +48,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         return languages[row]
     }
     
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
     
     
     @IBAction func translate(sender: AnyObject) {
