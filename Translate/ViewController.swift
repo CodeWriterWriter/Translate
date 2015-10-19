@@ -13,7 +13,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
     @IBOutlet weak var languageToTranslateTo: UIPickerView!
-    var languages: [String:String] = [String:String]()
+    @IBOutlet weak var myLabel:UILabel!
+    var languages: [String] = [String]()
+    var languageKeys: [String] = [String]()
     //var data = NSMutableData()
     
     override func viewDidLoad() {
@@ -21,22 +23,42 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         self.languageToTranslateTo.dataSource = self
         self.languageToTranslateTo.delegate = self
-        languages["Irish"] = "ga"
-        languages["Turkish"] = "tr"
+        languages.append("Irish"); languageKeys.append("ga")
+        languages.append("Turkish"); languageKeys.append("tr")
         
     }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1//2
+    }
+    
+    func pickerView(pickerView: UIPickerView,
+        numberOfRowsInComponent component: Int) -> Int {
+        return languages.count
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return languages[row]
+    }
+    
+    
+    
     @IBAction func translate(sender: AnyObject) {
         
         let str = textToTranslate.text
         let escapedStr = str.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
-        let langStr = ("en|fr").stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+        let destinationLang = languageKeys[languageToTranslateTo.selectedRowInComponent(0)]
+       /* let sourceLang = languageKeys[languageToTranslateTo.selectedRowInComponent(1)]*/
+        
+        
+        let langStr = (/*sourceLang + */"en|" + destinationLang).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         let urlStr:String = ("http://api.mymemory.translated.net/get?q="+escapedStr!+"&langpair="+langStr!)
         
