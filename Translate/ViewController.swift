@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate {
     
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
     @IBOutlet weak var languageToTranslateTo: UIPickerView!
@@ -69,6 +70,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         let destinationLang = languageKeys[languageToTranslateTo.selectedRowInComponent(0)]
        /* let sourceLang = languageKeys[languageToTranslateTo.selectedRowInComponent(1)]*/
         
+        let session = NSURLSession.sharedSession()
         
         let langStr = (/*sourceLang + */"en|" + destinationLang).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
@@ -80,16 +82,18 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         //var data = NSMutableData()var data = NSMutableData()
         
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        /*let indicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         indicator.center = view.center
         view.addSubview(indicator)
+        indicator.startAnimating()*/
         indicator.startAnimating()
         
         var result = "<Translation Error>"
         
+        //NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue())
+        //session.dataTaskWithRequest(request) { (data, response, error) -> Void in
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
-            
-            indicator.stopAnimating()
+            self.indicator.stopAnimating()
             
             if let httpResponse = response as? NSHTTPURLResponse {
                 if(httpResponse.statusCode == 200){
@@ -104,9 +108,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 }
                 
                 self.translatedText.text = result
+                NSLog(result)
             }
         }
-        
     }
 }
 
