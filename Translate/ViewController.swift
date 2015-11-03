@@ -10,10 +10,12 @@ import UIKit
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate {
     
+    @IBOutlet var background: UIView!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
     @IBOutlet weak var languageToTranslateTo: UIPickerView!
+    @IBOutlet weak var languageToTranslateFrom: UIPickerView!
     var languages: [String] = [String]()
     var languageKeys: [String] = [String]()
     //var data = NSMutableData()
@@ -21,9 +23,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.textToTranslate.delegate = self
         self.languageToTranslateTo.dataSource = self
         self.languageToTranslateTo.delegate = self
+        self.languageToTranslateFrom.dataSource = self
+        self.languageToTranslateFrom.delegate = self
         self.textToTranslate.delegate = self;
+        languages.append("English"); languageKeys.append("en")
         languages.append("Irish"); languageKeys.append("ga")
         languages.append("Turkish"); languageKeys.append("tr")
         languages.append("French"); languageKeys.append("fr")
@@ -34,6 +40,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        textToTranslate.text = ""
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -68,11 +78,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         let escapedStr = str.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         let destinationLang = languageKeys[languageToTranslateTo.selectedRowInComponent(0)]
-       /* let sourceLang = languageKeys[languageToTranslateTo.selectedRowInComponent(1)]*/
+        let sourceLang = languageKeys[languageToTranslateFrom.selectedRowInComponent(0)]
         
-        let session = NSURLSession.sharedSession()
+        //let session = NSURLSession.sharedSession()
         
-        let langStr = (/*sourceLang + */"en|" + destinationLang).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+        let langStr = (/*sourceLang + "en|"*/ sourceLang + "|" + destinationLang).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         let urlStr:String = ("http://api.mymemory.translated.net/get?q="+escapedStr!+"&langpair="+langStr!)
         
