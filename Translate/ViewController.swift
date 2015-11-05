@@ -76,9 +76,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         let str = textToTranslate.text
         let escapedStr = str.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-        
+    
         let destinationLang = languageKeys[languageToTranslateTo.selectedRowInComponent(0)]
         let sourceLang = languageKeys[languageToTranslateFrom.selectedRowInComponent(0)]
+        
+        if (destinationLang == sourceLang) {return;}
         
         //let session = NSURLSession.sharedSession()
         
@@ -103,6 +105,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         //NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue())
         //session.dataTaskWithRequest(request) { (data, response, error) -> Void in
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
+       //let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) in
             self.indicator.stopAnimating()
             
             if let httpResponse = response as? NSHTTPURLResponse {
@@ -120,7 +123,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 self.translatedText.text = result
                 NSLog(result)
             }
-        }
+        }//);
+        //task.resume();
     }
 }
 

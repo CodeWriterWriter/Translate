@@ -285,6 +285,7 @@
 				FFD2F9C71BD1101A00F54057 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
